@@ -23,7 +23,7 @@ class UserController extends Controller
     
         $level = LevelModel::all(); 
     
-        return view('layouts.index', [
+        return view('user.index', [
             'breadcrumb' => $breadcrumb,
             'page'       => $page,
             'level'      => $level,
@@ -46,7 +46,7 @@ class UserController extends Controller
         $level = LevelModel::all();
         $activeMenu = 'user'; 
 
-        return view('layouts.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level'=> $level, 'activeMenu' => $activeMenu]);
+        return view('user.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level'=> $level, 'activeMenu' => $activeMenu]);
     }
 
 
@@ -111,7 +111,7 @@ public function show(string $id)
 
     $activeMenu = 'user'; // set menu yang sedang aktif
 
-    return view('layouts.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+    return view('user.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
 }
 
 
@@ -132,7 +132,7 @@ public function edit(string $id)
 
     $activeMenu = 'user';
 
-    return view('layouts.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'level' => $level, 'activeMenu' => $activeMenu]);
+    return view('user.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'level' => $level, 'activeMenu' => $activeMenu]);
 }
 
 // Menyimpan perubahan data user
