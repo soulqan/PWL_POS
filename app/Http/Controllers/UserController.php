@@ -12,17 +12,25 @@ class UserController extends Controller
     {
         $breadcrumb = (object) [
             'title' => 'Daftar User',
-            'list' => ['Home', 'User']
+            'list'  => ['Home', 'User']
         ];
-
+    
         $page = (object) [
             'title' => 'Daftar user yang terdaftar dalam sistem'
         ];
-
+    
         $activeMenu = 'user'; 
-
-        return view('layouts.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+    
+        $level = LevelModel::all(); 
+    
+        return view('layouts.index', [
+            'breadcrumb' => $breadcrumb,
+            'page'       => $page,
+            'level'      => $level,
+            'activeMenu' => $activeMenu
+        ]);
     }
+    
 
 
     public function create()
@@ -47,9 +55,11 @@ class UserController extends Controller
     {
         $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
             ->with('level');
+            if ($request->level_id) {
+                $users->where('level_id' , $request->level_id);
+            }
 
         return DataTables::of($users)
-// menambahkan kolom index / no urut (default nama kolom: DT_RowIndex)
             ->addIndexColumn()
             ->addColumn('aksi', function ($user) { // menambahkan kolom aksi
                     $btn = '<a href="'.url('/user/' . $user->user_id).'" class="btn btn-info btn- sm">Detail</a> ';
