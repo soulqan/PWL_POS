@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\SupplierController;
 
 Route::get('/', [WelcomeController::class,'index']);
 
@@ -56,3 +57,5 @@ Route::resource('barang', BarangController::class);
 Route::get('/barang/data', [BarangController::class, 'getData'])->name('barang.data');
 
 
+
+Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
