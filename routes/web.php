@@ -57,6 +57,13 @@ Route::group(['prefix' => 'kategori'], function () {
     Route::get('/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
     Route::put('/{id}', [KategoriController::class, 'update'])->name('kategori.update');
     Route::delete('/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
+    Route::post('/ajax', [KategoriController::class, 'store'])->name('kategori.store');
+    Route::post('/kategori/list', [KategoriController::class, 'getData'])->name('kategori.list');
+    Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit'])->name('kategori.edit');
+    Route::get('/kategori/list', [KategoriController::class, 'getData'])->name('kategori.getData');
+    Route::get('/kategori/create_ajax', [KategoriController::class, 'create_ajax'])->name('kategori.create_ajax');
+    Route::put('/{id}/update_ajax', [KategoriController::class, 'update'])->name('kategori.update');
+    Route::delete('/{id}/delete_ajax', [KategoriController::class, 'destroy'])->name('kategori.destroy');
 });
 
 Route::resource('barang', BarangController::class);
