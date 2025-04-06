@@ -64,11 +64,24 @@ Route::middleware(['auth'])->group(function () {
     // Hanya untuk role ADM
     Route::middleware(['authorize:ADM'])->prefix('level')->name('level.')->group(function () {
         Route::get('/', [LevelController::class, 'index'])->name('index');
-        Route::post('/list', [LevelController::class, 'getData'])->name('list');
+        Route::post('/list', [LevelController::class, 'list'])->name('list');
         Route::get('/create', [LevelController::class, 'create'])->name('create');
         Route::post('/', [LevelController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [LevelController::class, 'edit'])->name('edit');
         Route::put('/{id}', [LevelController::class, 'update'])->name('update');
         Route::delete('/{id}', [LevelController::class, 'destroy'])->name('destroy');
     });
+
+    // artinya semua route di dalam group ini harus punya role ADM (Administrator) dan MNG (Manager)
+Route::middleware(['authorize:ADM,MNG'])->group(function(){
+    Route::get('/barang',[BarangController::class,'index']);
+    Route::post('/barang/list',[BarangController::class,'list']);
+    Route::get('/barang/create_ajax',[BarangController::class,'create_ajax']); // ajax form create
+    Route::post('/barang_ajax',[BarangController::class,'store_ajax']); // ajax store
+    Route::get('/barang/{id}/edit_ajax',[BarangController::class,'edit_ajax']); // ajax form edit
+    Route::put('/barang/{id}/update_ajax',[BarangController::class,'update_ajax']); // ajax update
+    Route::get('/barang/{id}/delete_ajax',[BarangController::class,'confirm_ajax']); // ajax form confirm
+    Route::delete('/barang/{id}/delete_ajax',[BarangController::class,'delete_ajax']); // ajax delete
+});
+
 });
