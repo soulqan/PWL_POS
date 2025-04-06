@@ -132,6 +132,19 @@
           <i class="fas fa-th-large"></i>
         </a>
       </li>
+       <!-- Logout Button -->
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{{ route('logout') }}"
+           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+          <i class="fas fa-sign-out-alt mr-1"></i> Logout
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+        </form>
+      </li>
     </ul>
+
+   
+
   </nav>
   <!-- /.navbar -->

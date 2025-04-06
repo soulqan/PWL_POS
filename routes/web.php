@@ -7,6 +7,7 @@ use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', [WelcomeController::class,'index']);
 
@@ -72,3 +73,16 @@ Route::get('/barang/data', [BarangController::class, 'getData'])->name('barang.d
 
 
 Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
+
+
+
+Route::pattern('id','[0-9]+');
+
+Route::get('login', [AuthController::class,'login'])->name('login');
+Route::post('login', [AuthController::class,'postLogin']); 
+Route::get('logout', [AuthController::class,'logout'])->middleware('auth');
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('/', [UserController::class, 'index']); 
+}); 
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
