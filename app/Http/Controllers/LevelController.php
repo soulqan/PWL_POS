@@ -31,11 +31,14 @@ class LevelController extends Controller
             'activeMenu' => $activeMenu // 👈 Pastikan ini dikirim ke view
         ]);
     }
-    public function getData(Request $request) {
-        $data = LevelModel::select(['level_id', 'level_nama']);
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->make(true);
+    public function list(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = LevelModel::query();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
     }
     
 }
