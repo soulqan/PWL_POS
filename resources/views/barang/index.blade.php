@@ -1,52 +1,156 @@
 @extends('layouts.template')
 
 @section('content')
-<div class="card card-outline card-primary">
+<div class="card">
     <div class="card-header">
-        <h3 class="card-title">{{ $page->title }}</h3>
+        <h3 class="card-title">Daftar Barang</h3>
         <div class="card-tools">
-            <a href="{{ route('barang.create') }}" class="btn btn-sm btn-primary">Tambah Barang</a>
+            <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-info">Import Barang</button>
+            <a href="{{ url('/barang/create') }}" class="btn btn-primary">Tambah Data</a>
+            <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button>
         </div>
     </div>
 
     <div class="card-body">
+        <!-- Filter data -->
+        <div id="filter" class="form-horizontal filter-date p-2 border-bottom mb-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group form-group-sm row text-sm mb-0">
+                        <label for="filter_date" class="col-md-1 col-form-label">Filter</label>
+                        <div class="col-md-3">
+                            <select name="filter_kategori" class="form-control form-control-sm filter_kategori">
+                                <option value="">- Semua -</option>
+                                @foreach($kategori as $l)
+                                    <option value="{{ $l->kategori_id }}">{{ $l->kategori_nama }}</option>
+                                @endforeach
+                            </select>
+                            <small class="form-text text-muted">Kategori Barang</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert messages -->
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <table id="table_barang" class="table table-bordered table-striped">
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
+        <!-- Tabel Barang -->
+        <table class="table table-bordered table-sm table-striped table-hover" id="table-barang">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Kategori</th>
+                    <th>No</th>
                     <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Harga Beli</th>
                     <th>Harga Jual</th>
+                    <th>Kategori</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach($barangs as $barang)
-                    <tr>
-                        <td>{{ $barang->barang_id }}</td>
-                        <td>{{ $barang->kategori->kategori_nama ?? 'Tidak Ada' }}</td>
-                        <td>{{ $barang->barang_kode }}</td>
-                        <td>{{ $barang->barang_nama }}</td>
-                        <td>{{ number_format($barang->harga_beli, 0, ',', '.') }}</td>
-                        <td>{{ number_format($barang->harga_jual, 0, ',', '.') }}</td>
-                        <td>
-                            <a href="{{ route('barang.edit', $barang->barang_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('barang.destroy', $barang->barang_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
 @endsection
+
+@push('js')
+<script>
+    function modalAction(url = '') {
+        $('#myModal').load(url, function () {
+            $('#myModal').modal('show');
+        });
+    }
+
+    var tableBarang;
+
+    $(document).ready(function () {
+        tableBarang = $('#table-barang').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ url('barang/list') }}",
+                type: "POST",
+                dataType: "json",
+                data: function (d) {
+                    d.filter_kategori = $('.filter_kategori').val();
+                }
+            },
+            columns: [
+    {
+        data: "DT_RowIndex", 
+        className: "text-center",
+        width: "5%",
+        orderable: false,
+        searchable: false
+    },
+
+                {
+                    data: "barang_kode",
+                    width: "10%",
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: "barang_nama",
+                    width: "37%",
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: "harga_beli",
+                    width: "10%",
+                    orderable: true,
+                    searchable: false,
+                    render: function (data) {
+                        return new Intl.NumberFormat('id-ID').format(data);
+                    }
+                },
+                {
+                    data: "harga_jual",
+                    width: "10%",
+                    orderable: true,
+                    searchable: false,
+                    render: function (data) {
+                        return new Intl.NumberFormat('id-ID').format(data);
+                    }
+                },
+                {
+                    data: "kategori.kategori_nama",
+                    width: "14%",
+                    orderable: true,
+                    searchable: false
+                },
+                {
+                    data: "aksi",
+                    className: "text-center",
+                    width: "14%",
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+
+        // Enter key to trigger search
+        $('#table-barang_filter input').unbind().bind().on('keyup', function (e) {
+            if (e.keyCode === 13) {
+                tableBarang.search(this.value).draw();
+            }
+        });
+
+        // Filter kategori
+        $('.filter_kategori').change(function () {
+            tableBarang.draw();
+        });
+    });
+</script>
+@endpush
