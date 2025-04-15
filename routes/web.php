@@ -76,15 +76,28 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
 
     // Hanya untuk role ADM
-    Route::middleware(['authorize:ADM'])->prefix('level')->name('level.')->group(function () {
-        Route::get('/', [LevelController::class, 'index'])->name('index');
-        Route::post('/list', [LevelController::class, 'list'])->name('list');
-        Route::get('/create', [LevelController::class, 'create'])->name('create');
-        Route::post('/', [LevelController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [LevelController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [LevelController::class, 'update'])->name('update');
-        Route::delete('/{id}', [LevelController::class, 'destroy'])->name('destroy');
+    Route::group(['prefix' => 'level', 'middleware' => 'authorize:ADM'], function () {
+        Route::get('/', [LevelController::class, 'index']);
+        Route::get('/list', [LevelController::class, 'list']);
+        Route::get('/create', [LevelController::class, 'create']);
+        Route::post('/', [LevelController::class, 'store']);
+        Route::get('/create_ajax', [LevelController::class, 'create_ajax']);
+        Route::post('/ajax', [LevelController::class, 'store_ajax']);
+        Route::get('/import', [LevelController::class, 'import']);
+        Route::post('/import_ajax', [LevelController::class, 'import_ajax']);
+        Route::get('/export_excel', [LevelController::class, 'export_excel']);
+        Route::get('/export_pdf', [LevelController::class, 'export_pdf']);
+        Route::get('/{id}/show_ajax', [LevelController::class, 'show_ajax']);
+        Route::get('/{id}', [LevelController::class, 'show']);
+        Route::get('/{id}/edit', [LevelController::class, 'edit']);
+        Route::put('/{id}', [LevelController::class, 'update']);
+        Route::get('/{id}/edit_ajax', [LevelController::class, 'edit_ajax']);
+        Route::put('/{id}/update_ajax', [LevelController::class, 'update_ajax']);
+        Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);
+        Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);
+        Route::delete('/{id}', [LevelController::class, 'destroy']);
     });
+
 
     // artinya semua route di dalam group ini harus punya role ADM (Administrator) dan MNG (Manager)
 Route::middleware(['authorize:ADM,MNG'])->group(function(){
