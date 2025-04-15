@@ -26,20 +26,19 @@ Route::middleware(['auth'])->group(function () {
 
     // USER
     Route::prefix('user')->name('user.')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::post('/list', [UserController::class, 'list'])->name('list');
-        Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::post('/', [UserController::class, 'store'])->name('store');
-        Route::get('/create_ajax', [UserController::class, 'create_ajax'])->name('create_ajax');
-        Route::post('/ajax', [UserController::class, 'store_ajax'])->name('store_ajax');
-        Route::get('/{id}', [UserController::class, 'show'])->name('show');
-        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [UserController::class, 'update'])->name('update');
-        Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax'])->name('edit_ajax');
-        Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax'])->name('update_ajax');
-        Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax'])->name('confirm_ajax');
-        Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax'])->name('delete_ajax');
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+        Route::get('/', [UserController::class, 'index']);          // menampilkan halaman user
+        Route::get('/list', [UserController::class, 'list']);       // menampilkan data user dalam bentuk json datatables    
+        Route::get('/create_ajax', [UserController::class, 'create_ajax']);
+        Route::post('/ajax', [UserController::class, 'store_ajax']);
+        Route::get('/import', [UserController::class, 'import']);
+        Route::post('/import_ajax', [UserController::class, 'import_ajax']);
+        Route::get('/export_excel', [UserController::class, 'export_excel']);
+        Route::get('/export_pdf', [UserController::class, 'export_pdf']);
+        Route::get('/{id}/show_ajax', [UserController::class, 'show_ajax']);
+        Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']);
+        Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']);
+        Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
+        Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);
     });
 
     // // BARANG
