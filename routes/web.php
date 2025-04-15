@@ -58,18 +58,25 @@ Route::middleware(['auth'])->group(function () {
 
     // KATEGORI
     Route::prefix('kategori')->name('kategori.')->group(function () {
-        Route::get('/', [KategoriController::class, 'index'])->name('index');
-        Route::get('/create', [KategoriController::class, 'create'])->name('create');
-        Route::post('/', [KategoriController::class, 'store'])->name('store');
-        Route::post('/ajax', [KategoriController::class, 'store'])->name('store_ajax');
-        Route::get('/create_ajax', [KategoriController::class, 'create_ajax'])->name('create_ajax');
-        Route::post('/list', [KategoriController::class, 'getData'])->name('list');
-        Route::get('/{id}/edit', [KategoriController::class, 'edit'])->name('edit');
-        Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit'])->name('edit_ajax');
-        Route::put('/{id}', [KategoriController::class, 'update'])->name('update');
-        Route::put('/{id}/update_ajax', [KategoriController::class, 'update'])->name('update_ajax');
-        Route::delete('/{id}', [KategoriController::class, 'destroy'])->name('destroy');
-        Route::delete('/{id}/delete_ajax', [KategoriController::class, 'destroy'])->name('destroy_ajax');
+        Route::get('/', [KategoriController::class, 'index']);
+        Route::get('/list', [KategoriController::class, 'list']);
+        Route::get('/create', [KategoriController::class, 'create']);
+        Route::post('/', [KategoriController::class, 'store']); 
+        Route::get('/create_ajax', [KategoriController::class, 'create_ajax']);
+        Route::post('/ajax', [KategoriController::class, 'store_ajax']);
+        Route::get('/import', [KategoriController::class, 'import']);
+        Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);
+        Route::get('/export_excel', [KategoriController::class, 'export_excel']);
+        Route::get('/export_pdf', [KategoriController::class, 'export_pdf']);
+        Route::get('/{id}/show_ajax', [KategoriController::class, 'show_ajax']);
+        Route::get('/{id}', [KategoriController::class, 'show']);
+        Route::get('/{id}/edit', [KategoriController::class, 'edit']);
+        Route::put('/{id}', [KategoriController::class, 'update']);
+        Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit_ajax']);
+        Route::put('/{id}/update_ajax', [KategoriController::class, 'update_ajax']);
+        Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);
+        Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);
+        Route::delete('/{id}', [KategoriController::class, 'destroy']);
     });
 
     // SUPPLIER
