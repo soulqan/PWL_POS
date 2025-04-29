@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\Facades\DataTables;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -321,5 +322,45 @@ class UserController extends Controller
 
         $level = LevelModel::all();
         return view('user.edit_foto', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level' => $level, 'activeMenu' => $activeMenu]);
+    }
+
+    public function update_profile(Request $request, $id) {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'file_profile' => ['mimes:jpeg,jpg,png', 'max:5120'],
+                'nama' => 'required|max:100',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            $check = UserModel::find($id);
+            if ($check) {
+                if ($request->hasFile('file_profile')) {
+                    $file = $request->file('file_profile');
+                    $filename = Str::uuid()->toString() . '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('profile_pict'), $filename);
+                    
+                    $check->profile_photo = $filename;
+                } 
+                $check->nama = $request->nama;
+                $check->save();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data profil berhasil diupdate.'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false, 
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
     }
 }

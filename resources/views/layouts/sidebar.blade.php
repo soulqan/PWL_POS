@@ -1,20 +1,13 @@
 <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex {{ $activeMenu == 'dashboard' ? 'active' : '' }} ">
         <div class="image">
-            @php
-                $user = auth()->user();
-                $imagePath = $user->profile_photo 
-                    ? asset('storage/' . $user->profile_photo) 
-                    : asset('dist/img/user2-160x160.jpg');
-            @endphp
-            <img src="{{ $imagePath }}" class="img-circle elevation-2" alt="User Image">
+            <img src="{{ asset('profile_pict/'.auth()->user()->profile_photo) }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="{{url('/user/edit_foto')}}" class="d-block">{{ $user->username }}</a>
+            <a href="{{url('/user/'.auth()->user()->user_id.'/edit_foto')}}" class="d-block"> {{auth()->user()->username}} </a>
         </div>
     </div>
-    
     <!-- SidebarSearch Form -->
     <div class="form-inline mt-2">
         <div class="input-group" data-widget="sidebar-search">
@@ -65,19 +58,6 @@
                 <a href="{{ url('/barang') }}" class="nav-link {{ $activeMenu == 'barang' ? 'active' : '' }} ">
                     <i class="nav-icon far fa-list-alt"></i>
                     <p>Data Barang</p>
-                </a>
-            </li>
-            <li class="nav-header">Data Transaksi</li>
-            <li class="nav-item">
-                <a href="{{ url('/stok') }}" class="nav-link {{ $activeMenu == 'stok' ? 'active' : '' }} ">
-                    <i class="nav-icon fas fa-cubes"></i>
-                    <p>Stok Barang</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url('/penjualan') }}" class="nav-link {{ $activeMenu == 'penjualan' ? 'active' : '' }} ">
-                    <i class="nav-icon fas fa-cash-register"></i>
-                    <p>Transaksi Penjualan</p>
                 </a>
             </li>
            

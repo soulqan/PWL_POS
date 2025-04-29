@@ -31,7 +31,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create_ajax', [UserController::class, 'create_ajax']);
         Route::post('/ajax', [UserController::class, 'store_ajax']);
         Route::get('/import', [UserController::class, 'import']);
-        Route::get('/edit_foto', [UserController::class, 'edit_foto']);
+        Route::get('/{id}/edit_foto', [UserController::class, 'edit_foto']);
+        Route::post('/{id}/update_profile', [UserController::class, 'update_profile']);
         Route::post('/import_ajax', [UserController::class, 'import_ajax']);
         Route::get('/export_excel', [UserController::class, 'export_excel']);
         Route::get('/export_pdf', [UserController::class, 'export_pdf']);
@@ -81,7 +82,28 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // SUPPLIER
-    Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
+  // Hanya untuk role ADM
+  Route::group(['prefix' => 'supplier'], function () {
+    Route::get('/', [SupplierController::class, 'index']);
+    Route::get('/list', [SupplierController::class, 'list']);
+    Route::get('/create', [SupplierController::class, 'create']);
+    Route::post('/', [SupplierController::class, 'store']);
+    Route::get('/create_ajax', [SupplierController::class, 'create_ajax']);
+    Route::post('/ajax', [SupplierController::class, 'store_ajax']);
+    Route::get('/import', [SupplierController::class, 'import']);
+    Route::post('/import_ajax', [SupplierController::class, 'import_ajax']);
+    Route::get('/export_excel', [SupplierController::class, 'export_excel']);
+    Route::get('/export_pdf', [SupplierController::class, 'export_pdf']);
+    Route::get('/{id}/show_ajax', [SupplierController::class, 'show_ajax']);
+    Route::get('/{id}', [SupplierController::class, 'show']);
+    Route::get('/{id}/edit', [SupplierController::class, 'edit']);
+    Route::put('/{id}', [SupplierController::class, 'update']);
+    Route::get('/{id}/edit_ajax', [SupplierController::class, 'edit_ajax']);
+    Route::put('/{id}/update_ajax', [SupplierController::class, 'update_ajax']);
+    Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']);
+    Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']);
+    Route::delete('/{id}', [SupplierController::class, 'destroy']);
+});
 
     // Hanya untuk role ADM
     Route::group(['prefix' => 'level', 'middleware' => 'authorize:ADM'], function () {

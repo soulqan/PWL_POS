@@ -12,7 +12,7 @@
                         <div class="card-body box-profile">
                             <div class="text-center">
                                 <img class="profile-user-img img-fluid img-circle"
-                                    src="{{ asset('profile_pict/'.auth()->user()->profile_picture) }}" alt="User profile picture">
+                                    src="{{ asset('profile_pict/'.auth()->user()->profile_photo) }}" alt="User profile picture">
                             </div>
 
                             <div class="text-center mt-2">
@@ -59,7 +59,7 @@
                                         <div class="form-group row" style="align-items: center">
                                             <label class="col-sm-2 col-form-label">Profile</label>
                                             <div class="form-group col-sm-10">
-                                                <label for="file_profile"><img class="profile-user-img img-fluid img-circle mb-2" src="{{ asset('profile_pict/'.auth()->user()->profile_picture) }}"
+                                                <label for="file_profile"><img class="profile-user-img img-fluid img-circle mb-2" src="{{ asset('profile_pict/'.auth()->user()->profile_photo) }}"
                                                         alt="User profile picture"></label>
                                                 {{-- Tombol upload yang menyerupai tombol --}}
                                                 
@@ -77,14 +77,6 @@
                                                 <small id="error-nama" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                                            <div class="form-group col-sm-10">
-                                                <input type="email" class="form-control" id="inputEmail" placeholder="Email" value="{{ auth()->user()->email }}" name="email">
-                                                <small id="error-email" class="error-text form-text text-danger"></small>
-                                            </div>
-                                        </div>
-
                                         <div class="form-group row">
                                             <div class="offset-sm-2 col-sm-10">
 
@@ -143,11 +135,6 @@
                         minlength: 3,
                         maxlength: 100
                     },
-                    email: {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 100
-                    }
                 },
                 submitHandler: function(form) {    
                     var formProfile = new FormData(form); // Jadikan form ke FormData untuk menghandle file
